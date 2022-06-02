@@ -338,7 +338,7 @@ public class SvgView extends ReactViewGroup implements ReactCompoundView, ReactC
         return Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
     }
 
-    String toDataURL(int width, int height) {
+    String toDataURL(int width, int height, String compressionFormat) {
         Bitmap bitmap = Bitmap.createBitmap(
                 width,
                 height,
@@ -349,7 +349,13 @@ public class SvgView extends ReactViewGroup implements ReactCompoundView, ReactC
         clearChildCache();
         this.invalidate();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+        if(compressionFormat.equals("jpeg")) {
+          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        } else {
+          bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        }
+
         bitmap.recycle();
         byte[] bitmapBytes = stream.toByteArray();
         return Base64.encodeToString(bitmapBytes, Base64.DEFAULT);

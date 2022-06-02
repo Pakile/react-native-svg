@@ -268,14 +268,21 @@
     return base64;
 }
 
-- (NSString *)getDataURLwithBounds:(CGRect)bounds
+- (NSString *)getDataURLwithBounds:(CGRect)bounds formatTypeValue: (NSString *)formatTypeValue
 {
     UIGraphicsBeginImageContextWithOptions(bounds.size, NO, 1);
     [self clearChildCache];
     [self drawRect:bounds];
     [self clearChildCache];
     [self invalidate];
-    NSData *imageData = UIImagePNGRepresentation(UIGraphicsGetImageFromCurrentImageContext());
+    NSData *imageData;
+    
+    if([formatTypeValue isEqualToString:@"jpeg"]){
+        imageData = UIImageJPEGRepresentation(UIGraphicsGetImageFromCurrentImageContext(), 1);
+    }else{
+        imageData = UIImagePNGRepresentation(UIGraphicsGetImageFromCurrentImageContext());
+    }
+    
     NSString *base64 = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     UIGraphicsEndImageContext();
     return base64;

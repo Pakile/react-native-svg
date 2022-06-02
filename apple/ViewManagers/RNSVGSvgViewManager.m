@@ -43,6 +43,7 @@ RCT_CUSTOM_VIEW_PROPERTY(color, id, RNSVGSvgView)
     [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,RNSVGView *> *viewRegistry) {
         __kindof RNSVGView *view = viewRegistry[reactTag];
         NSString * b64;
+        NSString * compressionFormat = @"png";
         if ([view isKindOfClass:[RNSVGSvgView class]]) {
             RNSVGSvgView *svg = view;
             if (options == nil) {
@@ -50,6 +51,7 @@ RCT_CUSTOM_VIEW_PROPERTY(color, id, RNSVGSvgView)
             } else {
                 id width = [options objectForKey:@"width"];
                 id height = [options objectForKey:@"height"];
+                compressionFormat = [options objectForKey:@"compressionFormat"];
                 if (![width isKindOfClass:NSNumber.class] ||
                     ![height isKindOfClass:NSNumber.class]) {
                     RCTLogError(@"Invalid width or height given to toDataURL");
@@ -61,7 +63,7 @@ RCT_CUSTOM_VIEW_PROPERTY(color, id, RNSVGSvgView)
                 NSInteger hi = (NSInteger)[h intValue];
 
                 CGRect bounds = CGRectMake(0, 0, wi, hi);
-                b64 = [svg getDataURLwithBounds:bounds];
+                b64 = [svg getDataURLwithBounds:bounds formatTypeValue:compressionFormat];
             }
         } else {
             RCTLogError(@"Invalid svg returned frin registry, expecting RNSVGSvgView, got: %@", view);

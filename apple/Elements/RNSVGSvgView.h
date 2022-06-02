@@ -56,7 +56,7 @@
 
 - (NSString *)getDataURL;
 
-- (NSString *)getDataURLwithBounds:(CGRect)bounds;
+- (NSString *)getDataURLwithBounds:(CGRect)bounds formatTypeValue:(NSString *)formatTypeValue;
 
 - (CGRect)getContextBounds;
 

@@ -64,7 +64,8 @@ class SvgViewModule extends ReactContextBaseJavaModule {
                                 successCallback.invoke(
                                         svg.toDataURL(
                                                 options.getInt("width"),
-                                                options.getInt("height")
+                                                options.getInt("height"),
+                                                options.getString("compressionFormat")
                                         )
                                 );
                             } else {
