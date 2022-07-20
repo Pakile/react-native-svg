@@ -18,6 +18,7 @@ import android.graphics.Path;
 import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
 class CircleView extends RenderableView {
@@ -56,6 +57,13 @@ class CircleView extends RenderableView {
         double r = relativeOnOther(mR);
 
         path.addCircle((float) cx, (float) cy, (float) r, Path.Direction.CW);
+
+        elements = new ArrayList<>();
+        elements.add(new PathElement(ElementType.kCGPathElementMoveToPoint, new Point[]{new Point(mCx.value,mCy.value - mR.value )}));
+        elements.add(new PathElement(ElementType.kCGPathElementAddLineToPoint, new Point[]{new Point(mCx.value,mCy.value - mR.value ), new Point(mCx.value + mR.value,mCy.value  )}));
+        elements.add(new PathElement(ElementType.kCGPathElementAddLineToPoint, new Point[]{ new Point(mCx.value + mR.value,mCy.value  ),  new Point(mCx.value,mCy.value  + mR.value ) }));
+        elements.add(new PathElement(ElementType.kCGPathElementAddLineToPoint, new Point[]{new Point(mCx.value,mCy.value  + mR.value ),new Point(mCx.value - mR.value,mCy.value  )}));
+        elements.add(new PathElement(ElementType.kCGPathElementAddLineToPoint, new Point[]{new Point(mCx.value - mR.value,mCy.value  ), new Point(mCx.value,mCy.value - mR.value ) }));
         return path;
     }
 }

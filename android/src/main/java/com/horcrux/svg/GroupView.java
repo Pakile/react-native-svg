@@ -25,6 +25,9 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.views.view.ReactViewGroup;
 
+import java.util.ArrayList;
+
+
 import javax.annotation.Nullable;
 
 @SuppressLint("ViewConstructor")
@@ -79,6 +82,7 @@ class GroupView extends RenderableView {
         setupGlyphContext(canvas);
         clip(canvas, paint);
         drawGroup(canvas, paint, opacity);
+        renderMarkers(canvas, paint, opacity);
     }
 
     void drawGroup(final Canvas canvas, final Paint paint, final float opacity) {
@@ -86,6 +90,9 @@ class GroupView extends RenderableView {
         final SvgView svg = getSvgView();
         final GroupView self = this;
         final RectF groupRect = new RectF();
+
+        elements = new ArrayList<>();
+
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child instanceof MaskView) {
@@ -116,6 +123,11 @@ class GroupView extends RenderableView {
                 if (node.isResponsible()) {
                     svg.enableTouchEvents();
                 }
+                
+                if(node.elements != null){
+                  elements.addAll(node.elements);
+                }
+
             } else if (child instanceof SvgView) {
                 SvgView svgView = (SvgView)child;
                 svgView.drawChildren(canvas);
